@@ -40,7 +40,7 @@ jobs:
       run: |
         # 镜像名称和阿里云目标仓库
         image_name="mongo"
-        aliyun_repo="crpi-rabdabzjv0hyxneu.cn-hangzhou.personal.cr.aliyuncs.com/lglhg"
+        aliyun_repo="crpi-rabdabzjv0hyxneu.cn-hangzhou.personal.cr.aliyuncs.com/lglhg/mongo"
         
         # 获取所有标签的 API 请求（Docker Hub）
         tags=$(curl -s "https://registry.hub.docker.com/v2/repositories/library/${image_name}/tags/" | jq -r '.results[].name')

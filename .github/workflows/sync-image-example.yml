@@ -39,7 +39,7 @@ jobs:
     - name: Sync All Versions of Image to Aliyun
       run: |
         # 镜像名称和阿里云目标仓库
-        image_name="tomcat"
+        image_name="nginx"
         aliyun_repo="crpi-rabdabzjv0hyxneu.cn-hangzhou.personal.cr.aliyuncs.com/lglhg/${image_name}"
         
         # 获取所有标签的 API 请求（Docker Hub）

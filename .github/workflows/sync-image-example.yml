@@ -1,15 +1,19 @@
-name: Sync Image to Aliyun (No Login Example)
+# 工作流名称
+name: Sync Image to Aliyun Example
 
+# 怎样触发工作流
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
+# 工作流程任务（通常含有一个或多个步骤）
 jobs:
   build:
     runs-on: ubuntu-latest
 
+    # 在job中添加步骤来执行同步操作
     steps:
     - name: Git pull
       uses: actions/checkout@v3
@@ -17,22 +21,42 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2.9.1
 
-    # 获取所有 Docker Hub 镜像版本，并推送到阿里云
+    # 设置 Docker Hub 登录
+    - name: Login to Docker Hub
+      uses: docker/login-action@v2.2.0
+      with:
+        registry: docker.io
+        username: ${{secrets.DOCKER1_USERNAME}}
+        password: ${{secrets.DOCKER1_PASSWORD}}
+        logout: false
+
+    # 设置阿里云登录
+    - name: Login to Aliyun Docker Registry
+      uses: docker/login-action@v2.2.0
+      with:
+        registry: crpi-rabdabzjv0hyxneu.cn-hangzhou.personal.cr.aliyuncs.com
+        username: ${{secrets.ALIYUN_USERNAME}}
+        password: ${{secrets.ALIYUN_PASSWORD}}
+        logout: false
+
+    # 获取 Docker Hub 中所有标签，并同步到阿里云
     - name: Sync All Versions of Image to Aliyun
       run: |
-        # 镜像名称
-        image_name="mongo"  # 你可以根据需要修改为其他镜像名
+        # 镜像名称和阿里云目标仓库
+        image_name="mongo"
         aliyun_repo="crpi-rabdabzjv0hyxneu.cn-hangzhou.personal.cr.aliyuncs.com/lglhg/mongo"
         
-        # 获取镜像所有标签的 API
+        # 获取所有标签的 API 请求（Docker Hub）
         tags=$(curl -s "https://registry.hub.docker.com/v2/repositories/library/${image_name}/tags/" | jq -r '.results[].name')
 
-        # 拉取并推送每个标签
+        # 循环拉取每个标签，并推送到阿里云
         for tag in $tags; do
-          echo "正在同步镜像 ${image_name}:${tag} ..."
-          
-          # 拉取并推送镜像到阿里云
+          echo "同步镜像 ${image_name}:${tag} 到阿里云..."
+
+          # 拉取 Docker Hub 镜像
           docker pull "docker.io/library/${image_name}:${tag}"
+
+          # 标记并推送到阿里云仓库
           docker tag "docker.io/library/${image_name}:${tag}" "${aliyun_repo}:${tag}"
           docker push "${aliyun_repo}:${tag}"
         done

@@ -1,19 +1,15 @@
-# 工作流名称
 name: Sync Image to Aliyun Example
 
-# 怎样触发工作流
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
-# 工作流程任务（通常含有一个或多个步骤）
 jobs:
   build:
     runs-on: ubuntu-latest
 
-    # 在job中添加步骤来执行同步操作
     steps:
     - name: Git pull
       uses: actions/checkout@v3
@@ -44,19 +40,25 @@ jobs:
       run: |
         # 镜像名称和阿里云目标仓库
         image_name="mongo"
-        aliyun_repo="crpi-rabdabzjv0hyxneu.cn-hangzhou.personal.cr.aliyuncs.com/lglhg/mongo"
+        aliyun_repo="crpi-rabdabzjv0hyxneu.cn-hangzhou.personal.cr.aliyuncs.com/lglhg"
         
         # 获取所有标签的 API 请求（Docker Hub）
         tags=$(curl -s "https://registry.hub.docker.com/v2/repositories/library/${image_name}/tags/" | jq -r '.results[].name')
 
         # 循环拉取每个标签，并推送到阿里云
         for tag in $tags; do
+          # 检查标签是否包含 Windows 特定的字符串
+          if [[ "$tag" == *"windows"* ]]; then
+            echo "跳过 Windows 镜像 ${image_name}:${tag}..."
+            continue
+          fi
+
           echo "同步镜像 ${image_name}:${tag} 到阿里云..."
 
           # 拉取 Docker Hub 镜像
           docker pull "docker.io/library/${image_name}:${tag}"
 
-          # 标记并推送到阿里云仓库
+          # 标记并推送到阿里云仓库，标签不变
           docker tag "docker.io/library/${image_name}:${tag}" "${aliyun_repo}:${tag}"
           docker push "${aliyun_repo}:${tag}"
         done

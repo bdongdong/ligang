@@ -31,16 +31,21 @@ jobs:
         username: ${{ secrets.ALIYUN_USERNAME }}
         password: ${{ secrets.ALIYUN_PASSWORD }}
 
+    - name: Verify Docker Login and Info
+      run: |
+        docker info
+        docker images
+
     - name: Sync Image to Aliyun
       run: |
         image_name="open-webui/open-webui"
-        tag="ollama"  # Specify the tag you want to sync
+        tag="ollama"  # 指定你要同步的标签
 
         aliyun_repo="crpi-rabdabzjv0hyxneu.cn-hangzhou.personal.cr.aliyuncs.com/lglhg/${image_name}"
 
-        # Pull image from GHCR
+        # 从 GHCR 拉取镜像
         docker pull "ghcr.io/${image_name}:${tag}"
 
-        # Tag and push to Aliyun
+        # 标记并推送到阿里云
         docker tag "ghcr.io/${image_name}:${tag}" "${aliyun_repo}:${tag}"
         docker push "${aliyun_repo}:${tag}"

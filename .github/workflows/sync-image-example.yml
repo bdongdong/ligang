@@ -38,7 +38,7 @@ jobs:
 
     - name: Sync Image to Aliyun
       run: |
-        image_name="open-webui/open-webui"
+        image_name="ghcr.io/open-webui/open-webui"
         tag="ollama"  # 指定你要同步的标签
 
         aliyun_repo="crpi-rabdabzjv0hyxneu.cn-hangzhou.personal.cr.aliyuncs.com/lglhg/${image_name}"

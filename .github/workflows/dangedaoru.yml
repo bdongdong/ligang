@@ -37,6 +37,6 @@ jobs:
       run: |
         # 使用 skopeo 工具将镜像同步到阿里云个人仓库中，使用时请自行源和目标修改仓库名称和镜像名称
         skopeo copy docker://ghcr.io/ghcr.io/open-webui/open-webui:ollama \
-                      docker://crpi-rabdabzjv0hyxneu.cn-hangzhou.personal.cr.aliyuncs.com/lglhg/shardingsphere-agent:73e2095fded4f7b6b7dd4c44ac4d45dcc84966d6
+                      docker://crpi-rabdabzjv0hyxneu.cn-hangzhou.personal.cr.aliyuncs.com/lglhg/open-webui:ollama
      #    skopeo copy docker://mongo:latest docker://crpi-rabdabzjv0hyxneu.cn-hangzhou.personal.cr.aliyuncs.com/lglhg/mongo:latest
 

@@ -68,6 +68,6 @@ jobs:
           docker pull "docker.io/library/${image_name}:${tag}"
 
           # 标记并推送到阿里云仓库，标签不变
-          docker tag "docker.io/library/${image_name}:${tag}" "${aliyun_repo}:${tag}"
+          docker tag "docker.io/bitnami/${image_name}:${tag}" "${aliyun_repo}:${tag}"
           docker push "${aliyun_repo}:${tag}"
         done

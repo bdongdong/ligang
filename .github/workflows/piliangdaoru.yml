@@ -65,7 +65,7 @@ jobs:
           echo "同步镜像 ${image_name}:${tag} 到阿里云..."
 
           # 拉取 Docker Hub 镜像
-          docker pull "docker.io/${image_name}:${tag}"
+          docker pull "docker.io/library/${image_name}:${tag}"
 
           # 标记并推送到阿里云仓库，标签不变
           docker tag "docker.io/library/${image_name}:${tag}" "${aliyun_repo}:${tag}"

@@ -13,7 +13,7 @@ on:
 # 工作流程任务（通常含有一个或多个步骤）
 jobs:
   build:
-    runs-on: python:3.7
+    runs-on: mysql:8.0.32
  
     # 在job中添加步骤来执行同步操作。在上述job中，添加步骤来执行skopeo命令，从docker.io仓库拉取镜像，并将其推送到阿里云个人仓库。
     steps:
@@ -36,7 +36,7 @@ jobs:
     - name: Use Skopeo Tools Sync Image to Docker Hub
       run: |
         # 使用 skopeo 工具将镜像同步到阿里云个人仓库中，使用时请自行源和目标修改仓库名称和镜像名称
-        skopeo copy quay.io/coreos/mysql:v8.0.32 \
+        skopeo copy quay.io/coreos/mysql:8.0.32 \
                       docker://crpi-rabdabzjv0hyxneu.cn-hangzhou.personal.cr.aliyuncs.com/lglhg/open-webui:ollama
      #    skopeo copy docker://mongo:latest docker://crpi-rabdabzjv0hyxneu.cn-hangzhou.personal.cr.aliyuncs.com/lglhg/mongo:latest
 

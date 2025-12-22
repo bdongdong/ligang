@@ -1,5 +1,4 @@
-name: Sync Image to Aliyun Example
-
+name: 111111sdsds
 on:
   push:
     branches: [ "main" ]
@@ -36,7 +35,7 @@ jobs:
         logout: false
 
     # 获取 Docker Hub 中所有标签，并同步到阿里云
-    - name: Sync All Versions of Image to Aliyun
+    - name: sdsdssdds
       run: |
         # 镜像名称和阿里云目标仓库
         image_name="activemq"
